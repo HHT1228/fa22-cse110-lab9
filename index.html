@@ -87,6 +87,14 @@
     </section>
   </main>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "a37b9b8faa594466b4150ba5c5200ab6"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+
   <script>
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
@@ -95,13 +103,133 @@
       let firstNum = document.querySelector('#first-num').value;
       let secondNum = document.querySelector('#second-num').value;
       let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+
+      // Step 3: try and catch
+      try {
+        output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch(e) {
+        console.error('Error: Illegal input! Inputs must be numbers!');
+      } finally {
+        console.log('Finally')
+      }
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
 
     // Start your code here
     // You may move this JS to another file if you wish
+    
+    // Step 2
+    errorBtns[0].addEventListener("click", (event) => {
+      console.log("Console Log Demo");
+    });
+
+    errorBtns[1].addEventListener("click", (event) => {
+      console.error("Console Error Demo");
+    });
+
+    errorBtns[2].addEventListener("click", (event) => {
+      console.count("Console Count Demo");
+    });
+
+    errorBtns[3].addEventListener("click", (event) => {
+      console.warn("Console Warn Demo");
+    });
+
+    errorBtns[4].addEventListener("click", (event) => {
+      let var1 = 1919;
+      let var2 = 114514;
+      let reason = 'var1 is expected to be equal to var2';
+      console.assert(var1 == var2, {var1, var2, reason});
+    });
+
+    errorBtns[5].addEventListener("click", (event) => {
+      console.clear();
+    })
+
+    errorBtns[6].addEventListener("click", (event) => {
+      console.dir(document.body);
+    })
+
+    errorBtns[7].addEventListener("click", (event) => {
+      console.dirxml(document.body);
+    })
+
+    const groupName = "Group Demo:";
+    errorBtns[8].addEventListener("click", (event) => {
+      console.group(groupName);
+      console.info("Ferrari");
+      console.info("Alfa Romeo");
+      console.info("Alpine");
+    });
+
+    errorBtns[9].addEventListener("click", (event) => {
+      console.groupEnd(groupName);
+      console.log("Group ends here.");
+    });
+
+    errorBtns[10].addEventListener("click", (event) => {
+      console.table([
+        {
+          Driver: "Max Verstappen",
+        },
+        {
+          Driver: "Charles Leclerc",
+        },
+        {
+          Driver: "Sergio Perez",
+        }
+      ]);
+    });
+
+    errorBtns[11].addEventListener("click", (event) => {
+      console.time();
+      console.log("Timer begins");
+    });
+
+    errorBtns[12].addEventListener("click", (event) => {
+      console.timeEnd();
+      console.log('Timer ends')
+    });
+
+    // Helper function to demonstrate console.trace()
+    function first() {
+      function second() {
+        console.trace();
+      }
+      second();
+    }
+
+    errorBtns[13].addEventListener("click", (event) => {
+      first();
+    });
+
+    // Step 4: Custom error and throw
+    class CustomError extends Error {
+        constructor(message) {
+            super(message);
+            this.name = "rA9: Software Instability";
+            this.message = message + ", Initiating Contingency";
+        }
+    }
+
+    function aintGonnaWork() {
+      return nonExist;
+    }
+
+    errorBtns[14].addEventListener("click", (event) => {
+      try {
+        aintGonnaWork();
+      } catch (e) {
+        throw new CustomError(e);
+      } finally {
+        console.log("Finally");
+      }
+    });
+
+    // Step 5
+    TrackJS.track('Testing TrackJS!');
+
   </script>
 </body>
 
